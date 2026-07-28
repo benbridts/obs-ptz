@@ -1,0 +1,43 @@
+id: com.obsproject.Studio.Plugin.Ptz
+branch: stable
+runtime: com.obsproject.Studio
+runtime-version: stable
+sdk: org.freedesktop.Sdk//25.08
+build-extension: true
+separate-locales: false
+appstream-compose: false
+build-options:
+  prefix: /app/plugins/Ptz
+modules:
+  - name: qtserialport
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    sources:
+      - type: archive
+        url: https://download.qt.io/archive/qt/6.11/6.11.1/submodules/qtserialport-everywhere-src-6.11.1.tar.xz
+
+  - name: obs-ptz
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DENABLE_QT=ON
+      - -DENABLE_FRONTEND_API=ON
+      - -DENABLE_USB_CAM=ON
+      - -DENABLE_ONVIF=ON
+      - -DENABLE_SERIALPORT=ON
+      - -DENABLE_JOYSTICK=OFF
+    post-install:
+      - install -Dm644 --target-directory=${FLATPAK_DEST}/share/metainfo ${FLATPAK_ID}.metainfo.xml
+      - appstream-compose --basename=${FLATPAK_ID} --prefix=${FLATPAK_DEST} --origin=flatpak ${FLATPAK_ID}
+    sources:
+      - type: git
+        url: https://github.com/benbridts/obs-ptz.git
+        tag: 0.18.3
+        commit: f3916065232394d96d340b7c094f0e3dc2de58ad
+        x-checker-data:
+          type: git
+          is-main-source: true
+          tag-pattern: ^([\d.]+)$
+      - type: file
+        path: com.obsproject.Studio.Plugin.Ptz.metainfo.xml
