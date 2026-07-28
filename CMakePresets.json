@@ -102,8 +102,8 @@
       "displayName": "Ubuntu x86_64 CI build",
       "description": "Build for Ubuntu x86_64 on CI",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "CMAKE_COMPILE_WARNING_AS_ERROR": true,
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "ENABLE_CCACHE": true
       }
     },
@@ -131,8 +131,8 @@
       "displayName": "Ubuntu aarch64 CI build",
       "description": "Build for Ubuntu aarch64 on CI",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "CMAKE_COMPILE_WARNING_AS_ERROR": true,
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
         "ENABLE_CCACHE": true
       }
     }

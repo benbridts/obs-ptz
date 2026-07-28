@@ -603,12 +603,6 @@ static QVariant from_obs_data(obs_data_t *data, const char *name, obs_combo_form
 													    format);
 }
 
-static QVariant from_obs_data_autoselect(obs_data_t *data, const char *name, obs_combo_format format)
-{
-	return from_obs_data<obs_data_get_autoselect_int, obs_data_get_autoselect_double,
-			     obs_data_get_autoselect_string, obs_data_get_autoselect_bool>(data, name, format);
-}
-
 QWidget *OBSPropertiesView::AddList(obs_property_t *prop, bool &warning)
 {
 	const char *name = obs_property_name(prop);
@@ -661,18 +655,6 @@ QWidget *OBSPropertiesView::AddList(obs_property_t *prop, bool &warning)
 
 	if (idx != -1)
 		combo->setCurrentIndex(idx);
-
-	if (obs_data_has_autoselect_value(settings, name)) {
-		QVariant autoselect = from_obs_data_autoselect(settings, name, format);
-		int id = combo->findData(autoselect);
-
-		if (id != -1 && id != idx) {
-			QString actual = combo->itemText(id);
-			QString selected = combo->itemText(idx);
-			QString combined = tr("Basic.PropertiesWindow.AutoSelectFormat");
-			combo->setItemText(idx, combined.arg(selected).arg(actual));
-		}
-	}
 
 	QAbstractItemModel *model = combo->model();
 	warning = idx != -1 && model->flags(model->index(idx, 0)) == Qt::NoItemFlags;
@@ -1302,8 +1284,7 @@ static void UpdateFPSLabels(OBSFrameRatePropertyWidget *w)
 
 	media_frames_per_second fps{};
 	media_frames_per_second *valid_fps = nullptr;
-	if (obs_data_item_get_autoselect_frames_per_second(obj.get(), &fps, nullptr) ||
-	    obs_data_item_get_frames_per_second(obj.get(), &fps, nullptr))
+	if (obs_data_item_get_frames_per_second(obj.get(), &fps, nullptr))
 		valid_fps = &fps;
 
 	const char *option = nullptr;
