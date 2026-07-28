@@ -57,22 +57,95 @@ Once the repository is created:
 
 ### 3. Test the Build Locally
 
-Before submitting, verify the build works:
+Before submitting to Flathub, verify the build works on your machine.
+
+#### Prerequisites
+
+Install `flatpak` and `flatpak-builder` using your distribution's package
+manager. For example:
 
 ```bash
-# Install the Flatpak SDK and OBS runtime if not already present
-flatpak install flathub org.kde.Sdk//6.8
+# Fedora
+sudo dnf install flatpak flatpak-builder
+
+# Ubuntu / Debian
+sudo apt install flatpak flatpak-builder
+
+# Arch
+sudo pacman -S flatpak flatpak-builder
+```
+
+Make sure the Flathub remote is configured:
+
+```bash
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+```
+
+#### Install the Required Runtimes
+
+The manifest uses `org.freedesktop.Sdk//25.08` as the SDK and the OBS Studio
+Flatpak as the runtime:
+
+```bash
+flatpak install flathub org.freedesktop.Sdk//25.08
 flatpak install flathub com.obsproject.Studio
+```
 
-# Build the extension
+#### Build the Extension
+
+You can build directly from this repository without needing the Flathub repo.
+Run `flatpak-builder` against the manifest in the `flatpak/` directory:
+
+```bash
+cd flatpak/
 flatpak-builder --force-clean build-dir com.obsproject.Studio.Plugin.Ptz.yaml
+```
 
-# Install locally for testing
+This will download the sources (including QtSerialPort and obs-ptz), compile
+them, and place the result in `build-dir/`.
+
+#### Install Locally for Testing
+
+To install the built extension into your user Flatpak environment:
+
+```bash
+cd flatpak/
 flatpak-builder --user --install --force-clean build-dir com.obsproject.Studio.Plugin.Ptz.yaml
+```
 
-# Run OBS to verify the plugin loads
+#### Verify the Plugin Loads
+
+Launch OBS Studio and confirm the plugin is active:
+
+```bash
 flatpak run com.obsproject.Studio
 ```
+
+Once OBS is running, open the **Docks** menu in the menu bar. You should see a
+**PTZ Controls** entry. If it appears, the plugin loaded successfully.
+
+#### Uninstall the Local Build
+
+To remove the locally installed extension:
+
+```bash
+flatpak uninstall --user com.obsproject.Studio.Plugin.Ptz
+```
+
+#### Testing Against a Local Source Tree
+
+If you want to test changes to obs-ptz without pushing to a remote, you can
+temporarily edit the manifest to use a local path instead of the git source.
+Replace the `git` source block for obs-ptz with:
+
+```yaml
+sources:
+  - type: dir
+    path: /path/to/your/obs-ptz
+```
+
+Then rebuild as described above. Remember to revert this change before
+committing to the Flathub repository.
 
 ### 4. Updating the Extension
 
