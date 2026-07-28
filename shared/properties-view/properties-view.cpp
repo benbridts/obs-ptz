@@ -1,3 +1,13 @@
+// clang-format off
+#if defined(_MSC_VER)
+#define SUPPRESS_DEPRECATION_START __pragma(warning(push)) __pragma(warning(disable: 4996))
+#define SUPPRESS_DEPRECATION_END __pragma(warning(pop))
+#else
+#define SUPPRESS_DEPRECATION_START _Pragma("GCC diagnostic push") _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+#define SUPPRESS_DEPRECATION_END _Pragma("GCC diagnostic pop")
+#endif
+// clang-format on
+
 #include <QFormLayout>
 #include <QScrollBar>
 #include <QLabel>
@@ -603,11 +613,13 @@ static QVariant from_obs_data(obs_data_t *data, const char *name, obs_combo_form
 													    format);
 }
 
+SUPPRESS_DEPRECATION_START
 static QVariant from_obs_data_autoselect(obs_data_t *data, const char *name, obs_combo_format format)
 {
 	return from_obs_data<obs_data_get_autoselect_int, obs_data_get_autoselect_double,
 			     obs_data_get_autoselect_string, obs_data_get_autoselect_bool>(data, name, format);
 }
+SUPPRESS_DEPRECATION_END
 
 QWidget *OBSPropertiesView::AddList(obs_property_t *prop, bool &warning)
 {
@@ -662,6 +674,7 @@ QWidget *OBSPropertiesView::AddList(obs_property_t *prop, bool &warning)
 	if (idx != -1)
 		combo->setCurrentIndex(idx);
 
+SUPPRESS_DEPRECATION_START
 	if (obs_data_has_autoselect_value(settings, name)) {
 		QVariant autoselect = from_obs_data_autoselect(settings, name, format);
 		int id = combo->findData(autoselect);
@@ -673,6 +686,7 @@ QWidget *OBSPropertiesView::AddList(obs_property_t *prop, bool &warning)
 			combo->setItemText(idx, combined.arg(selected).arg(actual));
 		}
 	}
+SUPPRESS_DEPRECATION_END
 
 	QAbstractItemModel *model = combo->model();
 	warning = idx != -1 && model->flags(model->index(idx, 0)) == Qt::NoItemFlags;
@@ -1302,9 +1316,11 @@ static void UpdateFPSLabels(OBSFrameRatePropertyWidget *w)
 
 	media_frames_per_second fps{};
 	media_frames_per_second *valid_fps = nullptr;
+SUPPRESS_DEPRECATION_START
 	if (obs_data_item_get_autoselect_frames_per_second(obj.get(), &fps, nullptr) ||
 	    obs_data_item_get_frames_per_second(obj.get(), &fps, nullptr))
 		valid_fps = &fps;
+SUPPRESS_DEPRECATION_END
 
 	const char *option = nullptr;
 	obs_data_item_get_frames_per_second(obj.get(), nullptr, &option);
