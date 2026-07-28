@@ -176,5 +176,26 @@ with:
 flatpak override --user --device=all com.obsproject.Studio
 ```
 
+#### Host-Level Serial Device Access
+
+Even though the Flatpak sandbox has device access, the host system still
+enforces standard Unix permissions on device nodes. Serial devices such as
+`/dev/ttyUSB0` are typically owned by `root:dialout` (or `root:uucp` on Arch
+Linux). If the user running OBS does not belong to the appropriate group, the
+Flatpak sandbox will inherit that restriction and serial ports will not be
+accessible.
+
+To grant your user access to serial devices:
+
+```bash
+# Most distributions (Debian, Ubuntu, Fedora, etc.)
+sudo usermod -aG dialout $USER
+
+# Arch Linux
+sudo usermod -aG uucp $USER
+```
+
+You must log out and back in (or reboot) for the group change to take effect.
+
 Network-based protocols (VISCA over UDP/TCP and ONVIF) work within the default
 OBS Studio sandbox since it already has network access.

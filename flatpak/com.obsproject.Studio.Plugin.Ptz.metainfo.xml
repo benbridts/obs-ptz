@@ -12,6 +12,10 @@
       provides a control dock with pan/tilt/zoom controls, camera presets, and
       the ability to switch between multiple PTZ cameras.
     </p>
+    <p>
+      Note: Serial port access (for VISCA over RS-232) requires the user to be
+      a member of the dialout group (or uucp on Arch Linux) on the host system.
+    </p>
   </description>
   <url type="homepage">https://obsproject.com/forum/resources/ptz-controls.1284</url>
   <url type="bugtracker">https://github.com/benbridts/obs-ptz/issues</url>
