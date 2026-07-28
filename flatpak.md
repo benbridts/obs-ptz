@@ -90,12 +90,14 @@ automatically.
 
 ### 5. Sandbox Permissions
 
-The Flatpak sandbox restricts access to hardware by default. Users who need
-serial port access (for VISCA over RS-232) will need to grant additional
-permissions. Serial port support is disabled in the Flatpak build by default
-since it requires `--device=all` or specific device overrides.
+The Flatpak sandbox restricts access to hardware by default. However, the OBS
+Studio Flatpak already includes `--device=all` in its finish-args, which grants
+access to all devices including serial ports. This means serial port support
+(VISCA over RS-232) should work out of the box without any additional user
+configuration.
 
-Users can override permissions with:
+If for some reason device access is not working, users can explicitly grant it
+with:
 
 ```bash
 flatpak override --user --device=all com.obsproject.Studio

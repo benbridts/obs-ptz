@@ -17,7 +17,7 @@ modules:
       - -DENABLE_FRONTEND_API=ON
       - -DENABLE_USB_CAM=ON
       - -DENABLE_ONVIF=ON
-      - -DENABLE_SERIALPORT=OFF
+      - -DENABLE_SERIALPORT=ON
       - -DENABLE_JOYSTICK=OFF
     post-install:
       - install -Dm644 --target-directory=${FLATPAK_DEST}/share/metainfo ${FLATPAK_ID}.metainfo.xml
