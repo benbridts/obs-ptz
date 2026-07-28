@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="addon">
+  <id>com.obsproject.Studio.Plugin.Ptz</id>
+  <extends>com.obsproject.Studio</extends>
+  <name>PTZ Camera Control</name>
+  <summary>Control PTZ cameras directly from OBS Studio</summary>
+  <description>
+    <p>
+      PTZ Camera Control is an OBS Studio plugin that enables control of
+      Pan-Tilt-Zoom (PTZ) cameras directly from the OBS interface. It supports
+      VISCA over UDP and TCP, ONVIF, and USB camera protocols. The plugin
+      provides a control dock with pan/tilt/zoom controls, camera presets, and
+      the ability to switch between multiple PTZ cameras.
+    </p>
+  </description>
+  <url type="homepage">https://obsproject.com/forum/resources/ptz-controls.1284</url>
+  <url type="bugtracker">https://github.com/benbridts/obs-ptz/issues</url>
+  <project_license>GPL-2.0-only</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <developer id="ca.secretlab">
+    <name>Grant Likely</name>
+  </developer>
+  <releases>
+    <release version="0.18.3" date="2025-01-01">
+      <description>
+        <p>Fix compatibility with OBS 32.2.1</p>
+      </description>
+    </release>
+  </releases>
+</component>
