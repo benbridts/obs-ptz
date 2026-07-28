@@ -2,13 +2,21 @@ id: com.obsproject.Studio.Plugin.Ptz
 branch: stable
 runtime: com.obsproject.Studio
 runtime-version: stable
-sdk: org.kde.Sdk//6.8
+sdk: org.freedesktop.Sdk//25.08
 build-extension: true
 separate-locales: false
 appstream-compose: false
 build-options:
   prefix: /app/plugins/Ptz
 modules:
+  - name: qtserialport
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    sources:
+      - type: archive
+        url: https://download.qt.io/archive/qt/6.11/6.11.1/submodules/qtserialport-everywhere-src-6.11.1.tar.xz
+
   - name: obs-ptz
     buildsystem: cmake-ninja
     config-opts:
